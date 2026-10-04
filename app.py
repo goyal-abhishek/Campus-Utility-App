@@ -1,10 +1,11 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 import sqlite3
+import os
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
-app.secret_key = "campusfind_secret_key_change_this"
+app.secret_key = os.getenv("SECRET_KEY", "dev-secret-key")
 DB = "campus.db"
 
 def get_db():
