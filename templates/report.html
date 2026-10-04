@@ -1,0 +1,25 @@
+<!doctype html>
+<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Report Item - CampusFind</title><link rel="stylesheet" href="{{ url_for('static',filename='style.css') }}"></head>
+<body><div class="app"><header class="topbar"><div class="brand">🔎 CampusFind</div><a href="/" class="back">← Dashboard</a></header>
+<main class="container narrow"><section class="form-panel"><h1>Report an Item</h1><p class="muted">Tell other students what happened.</p>
+{% with messages=get_flashed_messages(with_categories=true) %}{% for category,message in messages %}
+<div class="flash {{category}}">{{message}}</div>{% endfor %}{% endwith %}
+<form method="post" onsubmit="return validateForm()">
+<label>Report Type<div class="choice-row"><label class="choice"><input type="radio" name="report_type" value="Lost" {% if form.get("report_type")=="Lost" %}checked{% endif %} required> 🔴 I Lost It</label>
+<label class="choice"><input type="radio" name="report_type" value="Found" {% if form.get("report_type")=="Found" %}checked{% endif %}> 🟢 I Found It</label></div></label>
+<label>Item Name<input name="item_name" value="{{form.get('item_name','')}}" required maxlength="80" placeholder="e.g. Black wallet"></label>
+<label>Description<textarea name="description" required maxlength="500" placeholder="Colour, brand, unique marks, etc.">{{form.get('description','')}}</textarea></label>
+<label>Location<input name="location" value="{{form.get('location','')}}" required maxlength="120" placeholder="e.g. Library, Block A"></label>
+<label>Date<input type="date" name="report_date" value="{{form.get('report_date','')}}" required></label>
+<label>Contact<input name="contact" value="{{form.get('contact','')}}" required maxlength="100" placeholder="Phone or email"></label>
+<button class="primary full">Submit Report</button></form></section></main></div>
+<script>
+function validateForm(){
+ const c=document.querySelector("[name='contact']").value.trim();
+ const d=document.querySelector("[name='description']").value.trim();
+ if(c.length<5){alert("Please enter valid contact information.");return false;}
+ if(d.length<5){alert("Please provide a little more description.");return false;}
+ return true;
+}
+</script></body></html>

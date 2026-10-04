@@ -1,0 +1,14 @@
+<!doctype html>
+<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{{report.item_name}} - CampusFind</title><link rel="stylesheet" href="{{url_for('static',filename='style.css')}}"></head>
+<body><div class="app"><header class="topbar"><div class="brand">🔎 CampusFind</div><a href="/" class="back">← Dashboard</a></header>
+<main class="container narrow">{% with messages=get_flashed_messages(with_categories=true) %}{% for category,message in messages %}
+<div class="flash {{category}}">{{message}}</div>{% endfor %}{% endwith %}
+<section class="detail-card"><div class="card-top"><span class="tag {{report.report_type|lower}}">{{report.report_type}}</span><span class="status">{{report.status}}</span></div>
+<h1>{{report.item_name}}</h1><p class="description">{{report.description}}</p>
+<div class="detail-grid"><div><span>📍 Location</span><b>{{report.location}}</b></div><div><span>📅 Date</span><b>{{report.report_date}}</b></div>
+<div><span>👤 Posted by</span><b>{{report.username}}</b></div><div><span>📞 Contact</span><b>{{report.contact}}</b></div></div>
+{% if report.user_id==session["user_id"] and report.status=="Active" %}<div class="actions">
+<form method="post" action="/resolve/{{report.id}}"><button class="primary">✓ Mark as Resolved</button></form>
+<form method="post" action="/delete/{{report.id}}" onsubmit="return confirm('Delete this report?')"><button class="danger">🗑 Delete</button></form>
+</div>{% endif %}</section></main></div></body></html>

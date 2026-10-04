@@ -1,0 +1,13 @@
+<!doctype html>
+<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Login - CampusFind</title><link rel="stylesheet" href="{{ url_for('static',filename='style.css') }}"></head>
+<body class="auth-page"><div class="auth-card">
+<div class="logo">🔎</div><h1>CampusFind</h1><p class="muted">Campus Lost & Found</p>
+{% with messages=get_flashed_messages(with_categories=true) %}{% for category,message in messages %}
+<div class="flash {{category}}">{{message}}</div>{% endfor %}{% endwith %}
+<form method="post">
+<label>Username<input name="username" required placeholder="Enter username"></label>
+<label>Password<input type="password" name="password" required placeholder="Enter password"></label>
+<button class="primary full">Login</button></form>
+<p class="demo">Demo: <b>student</b> / <b>student123</b></p>
+</div></body></html>

@@ -1,0 +1,30 @@
+<!doctype html>
+<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CampusFind</title><link rel="stylesheet" href="{{ url_for('static',filename='style.css') }}"></head>
+<body><div class="app"><header class="topbar"><div><div class="brand">🔎 CampusFind</div>
+<p class="muted">Lost something? Found something? Let's connect.</p></div>
+<div class="user-area"><span>Hi, <b>{{session["username"]}}</b></span><a href="/logout" class="logout">Logout</a></div></header>
+<main class="container">
+{% with messages=get_flashed_messages(with_categories=true) %}{% for category,message in messages %}
+<div class="flash {{category}}">{{message}}</div>{% endfor %}{% endwith %}
+<section class="hero"><div><h1>Find it. Report it. Return it. 🎒</h1>
+<p>A simple campus platform for lost and found items.</p></div><a href="/report" class="primary button">+ Report Item</a></section>
+<section class="stats"><a class="stat" href="/?type=Lost"><span>Lost Items</span><strong>{{counts.Lost}}</strong></a>
+<a class="stat" href="/?type=Found"><span>Found Items</span><strong>{{counts.Found}}</strong></a></section>
+<section class="panel"><form class="filters" method="get">
+<input name="search" value="{{search}}" placeholder="🔍 Search item, description or location...">
+<select name="type"><option value="">All</option><option value="Lost" {% if report_type=="Lost" %}selected{% endif %}>Lost</option>
+<option value="Found" {% if report_type=="Found" %}selected{% endif %}>Found</option></select>
+<select name="status"><option value="Active" {% if status=="Active" %}selected{% endif %}>Active</option>
+<option value="Resolved" {% if status=="Resolved" %}selected{% endif %}>Resolved</option></select>
+<button class="primary">Search</button><a href="/" class="clear">Clear</a></form></section>
+<div class="section-title"><h2>{{status}} Reports</h2><span>{{reports|length}} result(s)</span></div>
+{% if reports %}<div class="grid">{% for report in reports %}<article class="card">
+<div class="card-top"><span class="tag {{report.report_type|lower}}">{{report.report_type}}</span><span class="status">{{report.status}}</span></div>
+<h3>{{report.item_name}}</h3><p>{{report.description}}</p>
+<div class="meta"><span>📍 {{report.location}}</span><span>📅 {{report.report_date}}</span></div>
+<small>Posted {{report.created_at}} by {{report.username}}</small>
+<a href="/report/{{report.id}}" class="details-link">View Details →</a></article>{% endfor %}</div>
+{% else %}<div class="empty"><div class="empty-icon">📭</div><h3>No reports found</h3><p>Try another search or report an item yourself.</p>
+<a href="/report" class="primary button">Report an Item</a></div>{% endif %}
+</main></div></body></html>
