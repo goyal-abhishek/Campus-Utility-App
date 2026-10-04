@@ -180,6 +180,7 @@ def delete_report(report_id):
     flash("Report deleted.", "success")
     return redirect(url_for("index"))
 
+init_db()
+
 if __name__ == "__main__":
-    init_db()
     app.run(debug=False, use_reloader=False, port=5000)
